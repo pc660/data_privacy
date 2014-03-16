@@ -1,5 +1,6 @@
 package Main;
 import java.util.*;
+
 import Hierachy.*;
 import Main_Algorithm.*;
 
@@ -20,12 +21,28 @@ public class main {
 		}
 		Hierachy_Tree.pre_order(a);
 		
-		K_anonimity_Sweenty test= new K_anonimity_Sweenty("example1.csv", 2);
+	/*	K_anonimity_Sweenty test= new K_anonimity_Sweenty("example1.csv", 2);
 		test.create_priority();
 		test.create_hiearchy_tree_for_test();
 		test.create_frequency_list();
 		test.generalize();
 		for(int i=0;i<test.new_database.size();i++)
-			System.out.println(test.new_database.get(i));
+			System.out.println(test.new_database.get(i));*/
+		K_anonimity_Adam test = new K_anonimity_Adam("example1.csv",2);
+		
+		test.generate_all_subsets();
+		test.print_subsets();
+		for(int i=0;i<test.database.size();i++)
+			System.out.println(test.database.get(i));
+		 ArrayList<ArrayList<Integer> > result = test.generate_cover();
+		 for(int i=0;i<result.size();i++)
+			 System.out.print(result.get(i));
+		 System.out.print('\n');
+		 test.reduce(result);
+		 for(int i=0;i<result.size();i++)
+			 System.out.println(result.get(i));
+		 test.suppression(result);
+		 for(int i=0;i<test.new_database.size();i++)
+			 System.out.println(test.new_database.get(i));
 	}
 }

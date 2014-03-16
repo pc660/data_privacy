@@ -199,7 +199,7 @@ public class K_anonimity_Sweenty extends K_anonimity {
 			{
 				 ArrayList<Integer> tmp = new  ArrayList<Integer>();
 				 tmp.add(i);
-				map.put(str, tmp);
+				 map.put(str, tmp);
 			}
 			else
 			{
