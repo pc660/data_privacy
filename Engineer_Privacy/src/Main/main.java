@@ -27,7 +27,7 @@ public class main {
 		test.create_frequency_list();
 		test.generalize();
 		for(int i=0;i<test.new_database.size();i++)
-			System.out.println(test.new_database.get(i));*/
+			System.out.println(test.new_database.get(i));
 		K_anonimity_Adam test = new K_anonimity_Adam("example1.csv",2);
 		
 		test.generate_all_subsets();
@@ -43,6 +43,14 @@ public class main {
 			 System.out.println(result.get(i));
 		 test.suppression(result);
 		 for(int i=0;i<test.new_database.size();i++)
-			 System.out.println(test.new_database.get(i));
+			 System.out.println(test.new_database.get(i));*/
+		 l_diversity_Anatomy test = new l_diversity_Anatomy("example1.csv",2);
+		 test.sensitive.set(2, 1);
+		 test.initilization();
+		 test.Anatomy();
+		 for(int i=0;i<test.QIT.size();i++)
+			 System.out.println(test.QIT.get(i));
+		 for(int i=0;i<test.ST.size();i++)
+			 System.out.println(test.ST.get(i));
 	}
 }
