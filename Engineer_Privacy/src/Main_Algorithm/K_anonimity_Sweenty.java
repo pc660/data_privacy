@@ -166,7 +166,7 @@ public class K_anonimity_Sweenty extends K_anonimity {
 		while(database.size()>=k && count <5)
 		{
 			frequency tmp = priorityQueue.poll();
-			System.out.println(tmp.position +" "+ tmp.value);
+			//System.out.println(tmp.position +" "+ tmp.value);
 			int new_level = level.get(tmp.position);
 			
 			level.set(tmp.position, ++new_level);
@@ -181,6 +181,8 @@ public class K_anonimity_Sweenty extends K_anonimity {
 	            	map2.put(entry.getValue(), 1);
 	            	parent_num++;
 	            }
+	            
+	            
 	        }   
 			for(int i =0; i<database.size();i++)
 			{

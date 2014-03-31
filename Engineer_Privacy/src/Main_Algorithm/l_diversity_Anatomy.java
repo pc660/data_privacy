@@ -121,8 +121,7 @@ public class l_diversity_Anatomy extends l_diversity{
 			QI.add(map);
 		}
 		ArrayList<bucket> temp_bucket = new ArrayList<bucket> ();
-		for(int i=0;i<QI.size();i++)
-			System.out.println(QI.get(i));
+		
 		for(int i = 0;i<priorityQueue.size();i++)
 		{
 			bucket tmp = priorityQueue.poll();
@@ -160,7 +159,7 @@ public class l_diversity_Anatomy extends l_diversity{
 		
 		for(int i=0;i<QI.size();i++)
 		{
-			System.out.println(QI.get(i).size());
+			
 			HashMap<String, Integer> A_s = new HashMap<String, Integer>();
 			for (Map.Entry<Integer, Integer> entry : QI.get(i).entrySet()) {   
 				int index = entry.getKey();

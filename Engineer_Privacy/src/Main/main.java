@@ -46,21 +46,33 @@ public class main {
 			hierachy.add(a);
 			
 				
-		
+		/*this it only the demonstration, we set the number of records is only 10 in 
+		 * order to show the results.
+		 */
 			
 		
 		K_anonimity_Adam test = new K_anonimity_Adam("test",2,set_column);
 		test.sensitive.set(4, 1);
 		test.sensitive_pos = 4;
-		//for(int i=0;i<test.database.size();i++)
-		//	System.out.println(test.database.get(i));
 		test.generate_all_subsets();
 		 ArrayList<ArrayList<Integer> > result = test.generate_cover();
 		 test.suppression(result);
+		 System.out.println("This is the result for minimum diameter\n");
 		 for(int i=0;i<test.new_database.size();i++)
 			 System.out.println(test.new_database.get(i));
 	
-		
+		 K_anonimity_Sweenty test2= new K_anonimity_Sweenty("test", 2,set_column);
+			test2.sensitive.set(4, 1);
+			test2.sensitive_pos = 4;
+			test2.create_priority();
+			test2.create_hiearchy_tree_for_test();
+			test2.create_frequency_list();
+			
+			test2.generalize();
+			 System.out.println("This is the result for Datafly\n");
+				
+			for(int i=0;i<test2.new_database.size();i++)
+				System.out.println(test2.new_database.get(i));
 			
 		/*	
 		K_anonimity_Sweenty test= new K_anonimity_Sweenty("test", 5,set_column);
@@ -118,14 +130,16 @@ public class main {
 			set_column.add(1);
 			set_column.add(2);
 			
-		 l_diversity_Anatomy test2 = new l_diversity_Anatomy("example1.csv",2,set_column);
-		 test2.sensitive.set(2, 1);
-		 test2.initilization();
-		 test2.Anatomy();
-		 for(int i=0;i<test2.QIT.size();i++)
-			 System.out.println(test2.QIT.get(i));
-		 for(int i=0;i<test2.ST.size();i++)
-			 System.out.println(test2.ST.get(i));
+		 l_diversity_Anatomy test3 = new l_diversity_Anatomy("example1.csv",2,set_column);
+		 test3.sensitive.set(2, 1);
+		 test3.initilization();
+		 test3.Anatomy();
+		 System.out.println("This is the result for Anatomy\n");
+			
+		 for(int i=0;i<test3.QIT.size();i++)
+			 System.out.println(test3.QIT.get(i));
+		 for(int i=0;i<test3.ST.size();i++)
+			 System.out.println(test3.ST.get(i));
 		 
 		 
 	}

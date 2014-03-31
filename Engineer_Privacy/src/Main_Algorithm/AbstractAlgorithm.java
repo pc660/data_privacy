@@ -41,7 +41,7 @@ public abstract class AbstractAlgorithm {
           String line = ""; 
           int judge=0;
           int lines = 0;
-          while ((line = br.readLine()) != null && lines<100) { 
+          while ((line = br.readLine()) != null && lines<10) { 
         	  int tmp_count = 0;
         	 lines++;
        		  StringTokenizer st = new StringTokenizer(line, ",");
