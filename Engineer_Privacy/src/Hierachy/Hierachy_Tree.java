@@ -1,12 +1,41 @@
 package Hierachy;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
+
+import Tree_Generator.Tree;
+import Tree_Generator.Tree.Node;
 public class Hierachy_Tree {
+//	Hierachy_Tree root; 
 	public String parent;
 	public String name; 
 	public ArrayList<Hierachy_Tree> child;
-	
+	public static int get_num_of_leaves(Hierachy_Tree root)
+	{
+		int size = 0;
+		if(root.child.size() == 0)
+			return size + 1;
+		for(int i=0;i<root.child.size();i++)
+		{
+			size = size + get_num_of_leaves(root.child.get(i));
+		}
+		return size;
+	}
+	public static int get_num_of_nodes(Hierachy_Tree root)
+	{
+		int size = 0;
+		size = size + root.child.size();
+		for(int i = 0;i<root.child.size();i++)
+		{
+			size = size + get_num_of_nodes(root.child.get(i));
+		}
+		return size;
+	}
 	public Hierachy_Tree(String p, String n, ArrayList<Hierachy_Tree> children)
 	{
+		
 		this.parent = new String(p);
 		this.name = new String (n);
 		this.child = new ArrayList<Hierachy_Tree> ();
@@ -85,5 +114,61 @@ public class Hierachy_Tree {
 		return pre;
 	}
 	
+	public Hierachy_Tree find_node (String name, Hierachy_Tree root)
+	{
+		if(root == null)
+			return null;
+		if(name.equals(root.name))
+			return root;
+		for(int i=0;i<root.child.size();i++)
+		{
+			Hierachy_Tree node = find_node(name, root.child.get(i));
+			if( node!=null)
+				return node;
+		}
+		return null;
+	}
+	public  Hierachy_Tree create_Tree(String filename) throws IOException
+	{
+		BufferedReader br = new BufferedReader(new FileReader(filename));
+		this.name = "root";
+		//Hierachy_Tree hierachy = new Hierachy_Tree ("root");
+		
+		try 
+		{
+			String line = br.readLine();
+			String nodeData = "N/A";
+			
+			while (line != null) 
+			{
+				ArrayList <Hierachy_Tree> children = new ArrayList <Hierachy_Tree>();
+				String [] nodes = line.split(" ");
+				nodeData = nodes[0].substring(0, (nodes[0].length() - 1)); //Remove additional ":"
+				if(this.name == "root")
+					this.name = nodeData;
+				Hierachy_Tree tempParent = this.find_node(nodeData, this);
+				Hierachy_Tree tempChild;
+				int i = 0;
+				//I'm assuming a child will not have multiple parents
+				while(++i < nodes.length)
+				{
+					//Add node as a child of current_parent
+					tempChild = new Hierachy_Tree(nodeData, nodes[i]);
+					children.add(tempChild);
+				}
+				tempParent.child = children;
+				line = br.readLine();
+				
+				
+			}
+		
+		}
+		finally 
+		{
+			br.close();
+		}
+		return this;
+	}
 	
+	    
 }

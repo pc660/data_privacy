@@ -1,0 +1,5 @@
+workclass: self government non-employed Unknown
+self: Private Self-emp-not-inc Self-emp-inc
+government: Federal-gov Local-gov State-gov 
+non-employed: Without-pay Never-worked
+Unknown: ?

@@ -6,6 +6,14 @@ import Main_Algorithm.K_anonimity_Sweenty.frequency_test;
 
 import java.util.*;
 public class l_diversity_Anatomy extends l_diversity{
+	public l_diversity_Anatomy(String file, int l, ArrayList<Integer> set)
+	{
+		super(file, l, set);
+		OrderIsdn = new bucket_test();	
+	    QIT = new ArrayList<ArrayList<String> >();
+	    ST= new ArrayList<ArrayList<String> >();
+	    buck = new HashMap<String , bucket>();
+	}
 	public l_diversity_Anatomy(String file, int l)
 	{
 		super(file, l);

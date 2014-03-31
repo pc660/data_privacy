@@ -14,6 +14,7 @@ public abstract class AbstractAlgorithm {
 	public ArrayList<ArrayList<String>> column_domain;
 	public ArrayList<ArrayList<String > > database;
 	public ArrayList<ArrayList<String > > new_database;
+	public ArrayList<Integer> set_column;
 	public void setSensitive ( ArrayList <String> sen)
 	{
 		for(int i= 0;i<column;i++)
@@ -26,30 +27,114 @@ public abstract class AbstractAlgorithm {
 			}
 		}
 	}
+	
+	
 	public void readCSV(String filename)
 	{
 		
 	  try { 
           File csv = new File(filename);
-
           BufferedReader br = new BufferedReader(new FileReader(csv));
-
+          HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+          for(int i=0;i<this.set_column.size();i++)
+        	  map.put(this.set_column.get(i), 1);
           String line = ""; 
           int judge=0;
-          while ((line = br.readLine()) != null) { 
+          int lines = 0;
+          while ((line = br.readLine()) != null && lines<100) { 
+        	  int tmp_count = 0;
+        	 lines++;
        		  StringTokenizer st = new StringTokenizer(line, ",");
         	  if(judge==0){
         		  while (st.hasMoreTokens()) 
         		  {
+        			  if(map.containsKey(tmp_count))
         			  column_name.add(st.nextToken());
+        			  else st.nextToken();
+        			  tmp_count++;
         		  }
         	  judge=1;
         	  continue;
         	  }
         	  ArrayList<String> tmp=new ArrayList<String>();
+        	 
         	  while (st.hasMoreTokens()) { 
-        		  String str=st.nextToken();		  
-        		  tmp.add(str);
+        		  if(map.containsKey(tmp_count)){
+        		  String str=st.nextToken();	
+        		  
+        		  if(str.charAt(0)==' ')
+        			  tmp.add(str.substring(1));
+        		  else tmp.add(str);
+        		  
+        		  }
+        		  else st.nextToken();
+        		  tmp_count++;
+        	  } 
+        	  database.add(tmp);
+              
+          } 
+          br.close();
+         
+      } catch (FileNotFoundException e) { 
+         
+          e.printStackTrace(); 
+      } catch (IOException e) { 
+         
+          e.printStackTrace(); 
+      }
+	//return result; 
+  } 
+	public void readCSV2(String filename)
+	{
+		
+	  try { 
+          File csv = new File(filename);
+          BufferedReader br = new BufferedReader(new FileReader(csv));
+          HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+          for(int i=0;i<this.set_column.size();i++)
+        	  map.put(i, 1);
+          String line = ""; 
+          int judge=0;
+          int lines = 0;
+          while ((line = br.readLine()) != null ) { 
+        	  int tmp_count = 0;
+        	 lines++;
+        	 //System.out.println(line);
+        
+        	 
+       		  StringTokenizer st = new StringTokenizer(line, ";");
+        	  if(judge==0){
+        		  while (st.hasMoreTokens()) 
+        		  {
+        			  if(map.containsKey(tmp_count))
+        			  column_name.add(st.nextToken());
+        			  else st.nextToken();
+        			  tmp_count++;
+        		  }
+        	  judge=1;
+        	  continue;
+        	  }
+        	  ArrayList<String> tmp=new ArrayList<String>();
+        	 
+        	  while (st.hasMoreTokens()) { 
+        		  if(map.containsKey(tmp_count)){
+        		  String str=st.nextToken();	
+        		  if(str.contains("-"))
+        		  {
+        			  String str2 ="(";
+        			  str = str.replace("-", ",");
+        			  str2 = str2 + str;
+        			  str2 = str2 +")";
+        			  tmp.add(str2);
+        		  }
+        		  else{
+        		  if(str.charAt(0)==' ')
+        			  tmp.add(str.substring(1));
+        		  else tmp.add(str);
+        		  }
+        		  }
+        		  else st.nextToken();
+        		  tmp_count++;
         	  } 
         	  database.add(tmp);
               
@@ -77,10 +162,26 @@ public abstract class AbstractAlgorithm {
 		readCSV(file);
 		column = column_name.size();
 		row = database.size();
+		set_column = new ArrayList<Integer>();
 		for(int i = 0 ;i< column;i++)
 			sensitive.add(0);
 	}
-	
+	public AbstractAlgorithm( String file, ArrayList<Integer> set_column)
+	{
+		column_name = new ArrayList<String> ();
+		column_domain = new ArrayList<ArrayList<String> > ();
+		database = new ArrayList<ArrayList<String> > ();
+		sensitive =  new ArrayList <Integer> ();
+		new_database = new ArrayList<ArrayList<String> > ();
+		filename = file;
+		this.set_column = set_column;
+		readCSV(file);
+		column = column_name.size();
+		row = database.size();
+		
+		for(int i = 0 ;i< column;i++)
+			sensitive.add(0);
+	}
 	public void print ()
 	{
 		for (int i=0;i<column_name.size();i++)

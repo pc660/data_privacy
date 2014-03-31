@@ -1,0 +1,6 @@
+education: college after-high-school high-school before-high-school Unknown
+college: Bachelors Some-college Masters Doctorate 
+after-high-school: HS-grad Prof-school Assoc-acdm Assoc-voc
+high-school: 5th-6th 10th 11th 9th 7th-8th 12th
+before-high-school: 1st-4th Preschool
+Unknown: ?

@@ -1,11 +1,23 @@
 package Main_Algorithm;
 import Hierachy.*;
 
+import java.io.IOException;
 import java.util.*;
 public class K_anonimity_Sweenty extends K_anonimity {
 	public K_anonimity_Sweenty(String file, int k)
 	{
 		super(file, k);
+		OrderIsdn = new frequency_test();	
+		hierachy = new ArrayList<Hierachy_Tree> ();
+		level = new ArrayList<Integer>();
+		//freq = new ArrayList< ArrayList <String> > (database);
+		//System.out.print(column_name.size());
+		//priorityQueue = new PriorityQueue <frequency>(database.size(),OrderIsdn);
+		
+	}
+	public K_anonimity_Sweenty(String file, int k, ArrayList<Integer> set)
+	{
+		super(file, k, set);
 		OrderIsdn = new frequency_test();	
 		hierachy = new ArrayList<Hierachy_Tree> ();
 		level = new ArrayList<Integer>();
@@ -46,11 +58,11 @@ public class K_anonimity_Sweenty extends K_anonimity {
 	{
 		int size = database.get(0).size();
 		ArrayList< HashMap<String, Integer> > map= new ArrayList< HashMap<String, Integer>>();
-		
+			
 		
 		ArrayList<frequency> frequency_list = new ArrayList<frequency> ();
 		
-		for(int i=0;i<column_name.size();i++)
+		for(int i=0;i<column_name.size()-1;i++)
 		{
 			HashMap<String, Integer> tmp2 = new HashMap<String, Integer>();
 			map.add(tmp2);
@@ -83,10 +95,13 @@ public class K_anonimity_Sweenty extends K_anonimity {
 			}
 			
 		}
-		
+		//System.out.print(frequency_list.size());
 		for(int i=0;i<frequency_list.size();i++){ 
+				
 	            priorityQueue.add(frequency_list.get(i));
+	            
 	        }   
+		
 	}
 	public void print()
 	{
@@ -99,32 +114,34 @@ public class K_anonimity_Sweenty extends K_anonimity {
 	ArrayList<Hierachy_Tree> hierachy;
 	ArrayList<Integer> level ;
 	//ArrayList<frequency> freq_list ;
-	public void create_hiearchy_tree_for_test()
+	public void create_hiearchy_tree_for_test() throws IOException
 	{
 		
 		for(int i =0;i<column_name.size();i++){
 			level.add(0);
 		}
-		Hierachy_Tree a = new Hierachy_Tree("person");
-		Hierachy_Tree b = new Hierachy_Tree(a.name,"black");
-		Hierachy_Tree c = new Hierachy_Tree(a.name,"white");
-		a.child.add(b);
-		a.child.add(c);
+		Hierachy_Tree a = new Hierachy_Tree("root");
+		a.create_Tree("age.txt");
 		hierachy.add(a);
-		a = new Hierachy_Tree("1964-1965");
-		b = new Hierachy_Tree(a.name,"1964");
-		c = new Hierachy_Tree(a.name,"1965");
-		a.child.add(b);
-		a.child.add(c);
+		a = new Hierachy_Tree("root");
+		a.create_Tree("education");
 		hierachy.add(a);
-		a = new Hierachy_Tree("M or F");
-		b = new Hierachy_Tree(a.name,"male");
-		c = new Hierachy_Tree(a.name,"female");
-		a.child.add(b);
-		a.child.add(c);
-		hierachy.add(a);
+		a = new Hierachy_Tree("root");
+		a.create_Tree("education");
 		
+		hierachy.add(a);
+		 a = new Hierachy_Tree("root");
+			a.create_Tree("marital-status");
+			hierachy.add(a);
+		//Hierachy_Tree.pre_order(a);
+		a = new Hierachy_Tree("root");
+			a.create_Tree("race");
+			hierachy.add(a);
+		a = new Hierachy_Tree("root");
+		a.create_Tree("sex");
 		
+		hierachy.add(a);
+	
 		
 	}
 	
@@ -134,6 +151,7 @@ public class K_anonimity_Sweenty extends K_anonimity {
 		Hierachy_Tree root = hierachy.get(position);
 		//System.out.println(root.name);
 		ArrayList<Hierachy_Tree > list = root.get_ith_level(level);
+		
 		for(int i=0;i<list.size();i++)
 		{
 			map.put(list.get(i).name, list.get(i).parent);
@@ -143,16 +161,18 @@ public class K_anonimity_Sweenty extends K_anonimity {
 	public void generalize()
 	{
 		create_frequency_list();
-		while(database.size()>=k)
+		
+		int count =0;
+		while(database.size()>=k && count <5)
 		{
 			frequency tmp = priorityQueue.poll();
 			System.out.println(tmp.position +" "+ tmp.value);
 			int new_level = level.get(tmp.position);
+			
 			level.set(tmp.position, ++new_level);
 			//System.out.println(new_level);
 			HashMap<String , String > map = get_parent_name(tmp.position, (new_level-1));
 			HashMap<String, Integer> map2 = new HashMap<String, Integer>();
-			//System.out.println(map.size());
 			int parent_num = 0;
 			for (Map.Entry<String, String> entry : map.entrySet()) {   
 	            if(!map2.containsKey(entry.getValue()))
@@ -165,24 +185,35 @@ public class K_anonimity_Sweenty extends K_anonimity {
 			for(int i =0; i<database.size();i++)
 			{
 				String str = database.get(i).get(tmp.position);
+				
 				if(map.containsKey(str))
-				{
+				{					
 					database.get(i).set(tmp.position, map.get(str));
 				}
 			}
-			System.out.println(tmp.value +" "+map.size()+" "+parent_num);
+		//	System.out.println(tmp.value +" "+map.size()+" "+parent_num);
 			frequency new_freq = new frequency (tmp.position, tmp.value - map.size() + map2.size());
 			priorityQueue.add(new_freq);
 			//print();
 			create_frequency_list();
 			if(this.check())
 				break;
+			
+			count++;
+	
+		}
+		for(int i=new_database.size();i<this.row;i++)
+		{
+			ArrayList<String> tmp = new ArrayList<String> ();
+			for(int j=0 ;j<this.column;j++)
+				tmp.add("*");
+			new_database.add(tmp);
 		}
 	}
 	public void create_frequency_list()
 	{
 		//freq_list.clear();
-		HashMap  <String, ArrayList<Integer>> map = new HashMap<String,  ArrayList<Integer>>();
+		HashMap  <String, ArrayList<String> > map = new HashMap<String,  ArrayList<String>>();
 		
 		for(int i=0;i<database.size();i++)
 		{
@@ -191,49 +222,75 @@ public class K_anonimity_Sweenty extends K_anonimity {
 			{
 				if(sensitive.get(j) !=1 )
 				{
-					str = str+database.get(i).get(j)+',';
+					str = str+database.get(i).get(j)+'@';
 				}
 				
 			}
 			if(!map.containsKey(str))
 			{
-				 ArrayList<Integer> tmp = new  ArrayList<Integer>();
-				 tmp.add(i);
+				 ArrayList<String> tmp = new  ArrayList<String>();
+				 tmp.add(database.get(i).get(this.sensitive_pos));
 				 map.put(str, tmp);
 			}
 			else
 			{
-				map.get(str).add(i);
+				map.get(str).add(database.get(i).get(this.sensitive_pos));
 				
 			}
 		}
-		//database.get(0);
-		 for (Map.Entry<String, ArrayList<Integer>> entry : map.entrySet()) {   
-			 	if(entry.getValue().size()>=k){
-			 		
-			 		ArrayList<Integer> tmp = entry.getValue();
-			 		//System.out.println(tmp.size());
-			 		for(int i=0;i<tmp.size();i++)
-			 		{
-			 			System.out.println(tmp.get(i));
-			 			new_database.add(database.get(tmp.get(i)));
-			 		}
-			 	}
+		database.clear();
+		 for (Map.Entry<String, ArrayList<String>> entry : map.entrySet()) {   
 			 	
-	        }   
-		 database.clear();
-		 for (Map.Entry<String, ArrayList<Integer>> entry : map.entrySet()) {   
-			 	if(entry.getValue().size()<k){
-			 		StringTokenizer st = new StringTokenizer(entry.getKey(), ",");
+			 		StringTokenizer st = new StringTokenizer(entry.getKey(), "@");
 			 		ArrayList<String> tmp=new ArrayList<String>(); 
 			 		while (st.hasMoreTokens()) { 
 			 			String str=st.nextToken();		  
 			 			tmp.add(str);
 			 		}
+			 		if(entry.getValue().size()>=k){
+			 		for(int i=0;i<entry.getValue().size();i++)
+			 		{
+			 			ArrayList<String> temp = new ArrayList<String> (tmp);
+			 			temp.add(entry.getValue().get(i));
+			 			new_database.add(temp);
+			 		}
+			 		}
+			 		else
+			 		{
+			 			for(int i=0;i<entry.getValue().size();i++)
+				 		{
+				 			ArrayList<String> temp = new ArrayList<String> (tmp);
+				 			temp.add(entry.getValue().get(i));
+				 			database.add(temp);
+				 		}
+			 		}
+			 	
+	        }   
+		
+		/* for(int i = 0;i<this.row - new_database.size();i++)
+		 {
+			 ArrayList<String> tmp = new ArrayList<String>();
+			 for( int j = 0;j<this.column;j++)
+			 {
+				 tmp.add("*");
+			 }
+			 new_database.add(tmp);
+		 } database.clear();
+		 for (Map.Entry<String, ArrayList<Integer>> entry : map.entrySet()) {   
+			 	if(entry.getValue().size()<k){
+			 		StringTokenizer st = new StringTokenizer(entry.getKey(), "@");
+			 		ArrayList<String> tmp=new ArrayList<String>(); 
+			 		while (st.hasMoreTokens()) { 
+			 			String str=st.nextToken();		  
+			 			tmp.add(str);
+			 		}
+			 		
 			 		database.add(tmp);
 			 	}
 			 	
 			 	
-	        }   
+	        }
+		*/
+		 
 	}
 }

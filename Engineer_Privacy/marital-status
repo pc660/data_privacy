@@ -1,0 +1,3 @@
+marital-status: married not-married ?
+married: Married-civ-spouse Married-spouse-absent  Married-AF-spouse
+not-married: Divorced Never-married Separated Widowed

@@ -7,14 +7,41 @@ public class K_anonimity_Adam extends K_anonimity {
 		subsets = new ArrayList<ArrayList<Integer>>();
 		diameter = new ArrayList<Integer>();
 	}
+	public K_anonimity_Adam(String file, int k, ArrayList<Integer> set_column)
+	{
+		super(file, k,set_column);
+		subsets = new ArrayList<ArrayList<Integer>>();
+		diameter = new ArrayList<Integer>();
+	}
 	ArrayList< ArrayList<Integer> >  subsets;
 	ArrayList<Integer> diameter;
 	public void generate_all_subsets()
 	{
 		ArrayList<Integer> tmp = new ArrayList<Integer>();
-		generate_all_subsets(0, tmp, 0, 0);
+		generate_all_subsets(0,tmp,0,0);
 	}
-	
+	private void generate_all_subsets2()
+	{
+		 byte[] counter = new byte[database.size()];
+		 int size = 0;
+		    while (true) {
+		      // Print combination
+		      ArrayList<Integer> tmp = new ArrayList<Integer>();
+		      for (int i = 0; i < counter.length; i++) {
+		        if (counter[i] != 0)
+		         tmp.add(i);
+		      }
+		      subsets.add(tmp);
+
+		      // Increment counter
+		      int i = 0;
+		      while (i < counter.length && counter[i] == 1)
+		        counter[i++] = 0;
+		      if (i == counter.length)
+		        break;
+		      counter[i] = 1;
+		    }
+	}
 	private void generate_all_subsets(int size, ArrayList<Integer> tmp, int start, int judge)
 	{
 		if(start > database.size() || size > 2*this.k -1)
